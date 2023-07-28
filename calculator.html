@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Calculator</title>
+    <style>
+        /* Add your custom CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(87, 65, 5, 0.8);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #calculator {
+            background-color: rgba(8, 90, 29, 0.8);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        #result {
+            font-size: 24px;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .button {
+            font-size: 20px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            background-color: rgba(17, 1, 24, 0.8);
+            color: white;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: rgb(83, 82, 3);
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="result" readonly oninput="validateInput()">
+        <div>
+            <button class="button" onclick="clearResult()">C</button>
+            <button class="button" onclick="appendValue('/')">/</button>
+            <button class="button" onclick="appendValue('*')">*</button>
+            <button class="button" onclick="appendValue('-')">-</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendValue('7')">7</button>
+            <button class="button" onclick="appendValue('8')">8</button>
+            <button class="button" onclick="appendValue('9')">9</button>
+            <button class="button" onclick="appendValue('+')">+</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendValue('4')">4</button>
+            <button class="button" onclick="appendValue('5')">5</button>
+            <button class="button" onclick="appendValue('6')">6</button>
+            <button class="button" onclick="evaluateExpression()">=</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendValue('1')">1</button>
+            <button class="button" onclick="appendValue('2')">2</button>
+            <button class="button" onclick="appendValue('3')">3</button>
+            <button class="button" onclick="appendValue('.')">.</button>
+        </div>
+        <div>
+            <button class="button" onclick="appendValue('0')">0</button>
+            <button class="button" onclick="deleteLast()">DEL</button>
+        </div>
+    </div>
+    <script>
+        let clearOnNextInput = true;
+
+        function appendValue(value) {
+            if (clearOnNextInput) {
+                document.getElementById("result").value = "";
+                clearOnNextInput = false;
+            }
+            document.getElementById("result").value += value;
+        }
+
+        function deleteLast() {
+            const currentValue = document.getElementById("result").value;
+            document.getElementById("result").value = currentValue.slice(0, -1);
+        }
+
+        function clearResult() {
+            document.getElementById("result").value = "";
+            clearOnNextInput = true;
+        }
+
+        function evaluateExpression() {
+            let expression = document.getElementById("result").value;
+            try {
+                const result = eval(expression);
+                document.getElementById("result").value = result;
+                clearOnNextInput = true;
+            } catch (error) {
+                document.getElementById("result").value = "Error";
+            }
+        }
+
+        function validateInput() {
+            // Remove any non-numeric or non-operator characters from the input
+            const currentValue = document.getElementById("result").value;
+            document.getElementById("result").value = currentValue.replace(/[^0-9+\-*/.]/g, '');
+        }
+    </script>
+</body>
+</html>
